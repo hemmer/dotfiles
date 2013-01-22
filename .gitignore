@@ -1,0 +1,3 @@
+# ignore temp / backup files
+vim/backup/*
+vim/tmp/*

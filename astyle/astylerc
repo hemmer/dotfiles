@@ -1,0 +1,13 @@
+# java style brackets
+--style=allman
+
+# indent class/structs so public, private, ... are indented
+--indent-classes
+
+--indent-switches
+--indent-cases
+--indent-col1-comments
+
+--break-blocks
+--keep-one-line-blocks
+--pad-oper

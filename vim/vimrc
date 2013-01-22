@@ -1,0 +1,273 @@
+""""""""""""""""""""""""""
+" Hemmer's .vimrc config "
+""""""""""""""""""""""""""
+
+" setup plugin managment
+filetype off
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+filetype plugin indent on
+
+" bash like filename completion
+set wildmode=longest,list,full
+set wildmenu
+
+" on some machines backspace behaves strangely
+set backspace=indent,eol,start
+
+
+"""""""""""""""""""""""
+" Colour scheme stuff "
+"""""""""""""""""""""""
+colorscheme molokai256mod
+syntax on
+
+"""""""""""""""""""
+" Mouse stuff
+set ttymouse=xterm2
+set mouse=a             " resize with mouse
+
+
+
+""""""""""""""""""
+" General Config "
+""""""""""""""""""
+set aw              " Save file when compiling, etc.
+let loaded_matchparen = 1
+set showcmd         " Show command in status line
+
+" disable help
+nnoremap K <Nop>
+
+set <F5>=[15~
+set <F6>=[17~
+"set <F7>=[18~
+"set <F8>=[19~
+"set <F9>=[20~
+
+
+" recentre search results
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+nnoremap <silent> g# g#zz
+
+" insert newline without leaving insert
+nnoremap <CR> o<Esc>
+
+" map : to ; for going easy on the fingers
+nore ; :
+
+set cindent
+set smartindent
+set autoindent
+
+set tabstop=4
+set shiftwidth=4
+set nocompatible
+
+" Spaces are better than a tab character
+set expandtab
+set smarttab
+
+" add incremental search
+set incsearch
+
+" custom backup directories
+set backup
+set backupdir=~/.vim/backup
+set directory=~/.vim/tmp
+
+" relative linenumbering
+if version >= 703
+    :set rnu
+    au InsertEnter * :set nu
+    au InsertLeave * :set rnu
+else 
+    :set nu
+endif
+
+au InsertEnter * wall 
+au InsertLeave * wall 
+
+map <ESC><ESC> :w<CR>
+
+" disable autocomment
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+" add dictionary support
+autocmd FileType * exec("setlocal dictionary+=".$HOME."/.vim/dictionaries/".expand('<amatch>'))
+set complete+=k
+
+" allow hiding unsaved buffers
+set hidden
+
+
+" Kill tabs and trailing space
+command! CLEAN retab | %s/ \+$//
+
+
+" default the statusline when entering Vim
+set laststatus=2
+hi StatusLine term=reverse ctermfg=232 ctermbg=241 cterm=none
+hi User1 ctermfg=3 ctermbg=241
+au InsertEnter * hi StatusLine term=reverse ctermfg=241 ctermbg=232 cterm=none
+au InsertLeave * hi StatusLine term=reverse ctermfg=232 ctermbg=241 cterm=none
+au InsertEnter * hi User1 term=reverse ctermfg=3 ctermbg=232 cterm=none
+au InsertLeave * hi User1 term=reverse ctermfg=3 ctermbg=241 cterm=none
+set statusline=%t\ %m\ [%{strlen(&fenc)?&fenc:'none'}]\ [%{&ff}]\ %h%r%1*%y%*%=%{fugitive#statusline()}\ %c,\ %l/%L\ %P
+
+
+""""""""""""""""""
+" Custom Keymaps "
+""""""""""""""""""
+
+" switch between header and source
+ map <silent> <F1> :A<CR>
+imap <silent> <F1> <Esc>:A<CR>
+
+" open tasklist
+ map <F2> <Plug>TaskList
+imap <F2> <ESC><Plug>TaskList
+
+" toggle pasting
+ map <silent> <F3> <ESC>:call TogglePaste()<CR>
+imap <silent> <F3> <ESC>:call TogglePaste()<CR>
+
+let g:toggle_relative_paste = 0
+function! TogglePaste()
+    if g:toggle_relative_paste == 0
+        set paste
+        if version >= 703
+            set norelativenumber
+            set nonumber
+        endif
+        let g:toggle_relative_paste = 1
+    else
+        set nopaste
+        if version >= 703
+            set number
+            set relativenumber
+        endif
+        let g:toggle_relative_paste = 0
+    endif
+endfunction
+
+" toggle undo history
+nnoremap <silent> <F4> :GundoToggle<CR>
+
+" toggle comment
+ map <F6> <Leader>c<space>
+imap <F6> <ESC> <Leader>c<space>
+
+" open / close all folds
+ map <F7> zM
+imap <F7> <ESC>zM
+ map <silent> <C-F7> zR
+imap <silent> <C-F7> <ESC>zR
+
+" code folding
+ map <F8> zA
+imap <F8> <Esc>zA
+
+" move lines up or down
+ map <C-Down> ddp
+imap <C-Down> <Esc>ddp
+ map <C-Up> ddkP
+imap <C-Up> <Esc>ddkP
+
+" faster escaping (mash j and k together)
+inoremap jk <ESC>
+inoremap kj <ESC>
+
+" disable arrow keys for learning!
+noremap   <Up>     <NOP>
+noremap   <Down>   <NOP>
+noremap   <Left>   <NOP>
+noremap   <Right>  <NOP>
+
+" Easier navigation of split windows
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Changes navigation so pressing down on a wrapped line goes to the next row,
+" not the next line
+nnoremap j gj
+nnoremap k gk
+
+" move between functions with Tab / Shift+Tab in normal mode
+nmap <silent> <Tab> :silent! normal }<CR>
+nmap <silent> <S-Tab> :silent! normal {<CR>
+
+" switch buffer
+noremap <C-left> :bprev<CR>
+noremap <C-right> :bnext<CR>
+let g:buftabs_marker_modified = "*"
+
+
+" make Y behave like it shoudl
+map Y y$
+
+
+" Automatically open, but do not go to (if there are errors) the quickfix /
+" location list window, or close it when is has become empty.
+" Note: Must allow nesting of autocmds to enable any customizations for quickfix
+" buffers.
+" Note: Normally, :cwindow jumps to the quickfix window if the command opens it
+" (but not if it's already open). However, as part of the autocmd, this doesn't
+" seem to happen.
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
+
+
+""""""""""""""""""""""
+" Completion Configs "
+""""""""""""""""""""""
+let g:SuperTabDefaultCompletionType = 'context'
+set ofu=syntaxcomplete#Complete
+set completeopt=menu
+
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType c set omnifunc=ccomplete#Complete
+
+
+
+
+
+
+"""""""""""""""""""""""
+" Substitution Macros "
+"""""""""""""""""""""""
+
+" Help delete character if it is 'empty space' stolen from Vim manual
+function! Eatchar()
+  let c = nr2char(getchar())
+  return (c =~ '\s') ? '' : c
+endfunction
+
+" Replace abbreviation if we're not in comment or other unwanted places
+" stolen from Luc Hermitte's excellent http://hermitte.free.fr/vim/
+function! MapNoContext(key, seq)
+  let syn = synIDattr(synID(line('.'),col('.')-1,1),'name')
+  if syn =~? 'comment\|string\|character\|doxygen'
+    return a:key
+  else
+    exe 'return "' .
+    \ substitute( a:seq, '\\<\(.\{-}\)\\>', '"."\\<\1>"."', 'g' ) . '"'
+  endif
+endfunction
+
+" Create abbreviation suitable for MapNoContext
+function! Iab (ab, full)
+  exe "iab <silent> <buffer> ".a:ab." <C-R>=MapNoContext('".
+    \ a:ab."', '".escape (a:full.'<C-R>=Eatchar()<CR>', '<>\"').
+    \"')<CR>"
+endfunction
