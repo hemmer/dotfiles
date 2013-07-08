@@ -7,6 +7,9 @@ nnoremap <leader>P P
 nnoremap p p'[v']=
 nnoremap P P'[v']=
 
+" LAPACK and BLAS should be included in syntax check
+let g:syntastic_c_checker="-llapac -lblas -fftw3"
+
 """""""""""""""""""""
 " C/C++ Keymappings "
 """""""""""""""""""""
@@ -14,16 +17,12 @@ nnoremap P P'[v']=
  map <F5> :make exec<CR>
 imap <F5> <Esc> :make exec<CR>
 
-" autoindent whole file and centre screen
-map <C-F8> m`:%!astyle<CR>``
-imap <C-F8> <Esc>m`:%!astyle<CR>``
-
 " compile using make
  noremap <F9> :silent make<CR>:redraw!<CR>
 inoremap <F9> <Esc> :silent make<CR>:redraw!<CR>
 "inoremap <F9> <Esc> :make<CR><CR>
 " clean using make
- noremap <C-F9> :make clean<CR><CR> 
+ noremap <C-F9> :make clean<CR><CR>
 inoremap <C-F9> <Esc> :make clean<CR><CR>
 
 " generate ctags for directory of active buffer
@@ -38,7 +37,7 @@ imap <silent> <F12> <Esc>:TlistToggle<CR><C-h>
 let Tlist_Exit_OnlyWindow = 1
 
 " hide omnicomplete scratch pane
-set completeopt=menu 
+set completeopt=menu
 
 autocmd BufWritePre *.c :%s/\s\+$//e
 
@@ -63,10 +62,16 @@ call Iab('intmain', 'int<CR>main (int argc, char **argv)<CR>'.
  \ '{<CR>x;<CR>return 0;<CR>}<CR><C-O>?x;<CR><Del><Del>')
 
 " solution from: http://groups.google.com/group/vim_dev/msg/ed4f258f5b4b9749
-set errorformat^=%-GIn\ file\ included\ %.%# 
+"set errorformat^=%-GIn\ file\ included\ %.%#
+"http://stackoverflow.com/questions/9427141/vim-tries-to-jump-to-nonexistent-file-after-make
+set errorformat^=%-GIn\ file\ included\ from\ %f:%l:%c:,%-GIn\ file
+         \\ included\ from\ %f:%l:%c\\,,%-GIn\ file\ included\ from\ %f
+         \:%l:%c,%-GIn\ file\ included\ from\ %f:%l
 
-" allow sensible code folding 
-:set foldmethod=syntax
+set mp=(make\ $*&&\ make\ clean)
+
+" allow sensible code folding
+set foldmethod=syntax
 
 
 " comment out undefined regions
@@ -85,8 +90,8 @@ function! AddCommentDefine()
   let g:CommentDefines = "\\(" . expand("<cword>") . "\\)"
   syn clear MyCommentOut
   syn clear MyCommentOut2
-  exe 'syn region MyCommentOut start="^\s*#\s*ifdef\s\+' . g:CommentDefines . '\>" end=".\|$" contains=MyCommentOut2'
-  exe 'syn region MyCommentOut2 contained start="' . g:CommentDefines . '" end="^\s*#\s*\(endif\>\|else\>\|elif\>\)" contains=MySkip'
+  exe 'syn region MyCommentOut start="^\s*#\s*ifdef\s\+' . g:CommentDefines . '\>" end=".\|$" contains=MyCommentOut2 '
+  exe 'syn region MyCommentOut2 contained start="' . g:CommentDefines . '" end="^\s*#\s*\(endif\>\|else\>\|elif\>\)" contains=MySkip '
 endfunction
 
 function! ClearCommentDefine()
@@ -94,3 +99,4 @@ function! ClearCommentDefine()
   syn clear MyCommentOut
   syn clear MyCommentOut2
 endfunction
+

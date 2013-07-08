@@ -107,3 +107,4 @@ hi CursorColumn                ctermbg=234
 hi LineNr          ctermfg=241 ctermbg=232
 hi NonText         ctermfg=250 ctermbg=234
 
+hi htmlBold     ctermfg=135

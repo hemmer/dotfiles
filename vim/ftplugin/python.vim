@@ -16,9 +16,6 @@ setlocal showmatch
 set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 
-" strip trailing whitespace before saving file
-autocmd BufWritePre *.py :%s/\s\+$//e
-
 " Python header
 if getline(1) == "" 
 	:call setline(1, "#!/usr/bin/env python")
@@ -38,6 +35,9 @@ let g:pyflakes_use_quickfix = 0
  map <F9> :make<CR><CR>                 
 imap <F9> <Esc> :make<CR><CR>
 
+
+ map <buffer> <F8> za
+imap <F8> <Esc>za
 
 
 """"""""""""""""""""""
