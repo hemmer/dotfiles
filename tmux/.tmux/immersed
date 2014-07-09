@@ -1,0 +1,15 @@
+#!/bin/bash
+
+selectp -t 0                                                    # select the first (0) pane
+send-keys 'cd ~/code/immersed/' C-m         # open code
+
+splitw -v -p 20                                                 # split it into two halves
+selectp -t 1                                                    # select the new, second (1) pane
+send-keys 'ssh -t gridui1 "wq"' C-m                             # open code
+#send-keys 'cd ~/code/flow-porous/output/ && watch tail COMPLETED' C-m   # open code
+
+
+selectp -t 0                                # go back to the first pane
+splitw -h -p 40
+selectp -t 1                                # select the new, second (1) pane
+send-keys 'cd ~/code/immersed/' C-m      # open code

@@ -11,10 +11,38 @@ set encoding=utf-8
 
 " setup plugin managment
 filetype off
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
-filetype plugin indent on
+"call pathogen#runtime_append_all_bundles()
+"call pathogen#helptags()
 
+set rtp+=~/.vim/bundle/vundle
+call vundle#begin()
+
+Plugin 'gmarik/vundle'
+Plugin 'sjl/gundo.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'vim-scripts/buftabs'
+Plugin 'scrooloose/nerdcommenter'
+
+Plugin 'kevinw/pyflakes-vim'
+Plugin 'ervandew/supertab'
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-repeat'
+Plugin 'svermeulen/vim-easyclip'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'hemmer/toggle-all-folds'
+
+"set rtp+=~/.vim/bundle/vim-latex-suite
+Plugin 'gerw/vim-latex-suite'
+"Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex'
+
+Plugin 'godlygeek/tabular'          " needed for vim-markdown
+Plugin 'plasticboy/vim-markdown'
+
+Plugin 'vim-scripts/Python-Syntax-Folding'
+
+call vundle#end()            " required
+
+filetype plugin indent on
 
 " bash like filename completion
 set wildmode=longest,list,full
@@ -24,16 +52,65 @@ set wildmenu
 set backspace=indent,eol,start
 
 
-"""""""""""""""""""""""
-" Colour scheme stuff "
-"""""""""""""""""""""""
-colorscheme molokai256mod
-syntax on
 
-"""""""""""""""""""
-" Mouse stuff
-set ttymouse=xterm2
-set mouse=a             " resize with mouse
+""""""""""""""""""""""""""""""
+" 2. Plugin Specific
+"""""""""""""""""""""""""""""
+
+let g:buftabs_marker_modified = "*"
+
+" mappings for easy-clip
+nmap M <Plug>MoveMotionEndOfLinePlug
+nnoremap ! m
+
+let g:SuperTabDefaultCompletionType = 'context'
+
+" file finding
+let g:ctrlp_map = '<c-e>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_max_depth = 2
+
+" type of latex
+let g:tex_flavour = 'latex'
+set suffixes+=.log,.aux,.bbl,.blg,.idx,.ilg,.ind,.out,.pdf
+
+if &term =~ '^screen'
+    " tmux will send xterm-style keys when its xterm-keys option is on
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+endif
+
+"""""""""""""""""""""""
+" 3. Interface
+"""""""""""""""""""""""
+colorscheme molokai256mod   " nice colourscheme
+syntax on                   " we want syntax highlighting
+
+set ttymouse=xterm2         " can use mouse in terminal
+set mouse=a                 " resize with mouse
+
+set showcmd                 " show command in status line
+
+" use relative linenumbering (where possible)
+if version >= 703
+    set relativenumber
+    set number
+else
+    set number
+endif
+
+set scrolloff=15
+
+
+" always show a status-line
+set laststatus=2
+" change status-line colours depending on whether we are in insert mode
+hi StatusLine term=reverse ctermfg=232 ctermbg=241 cterm=none
+au InsertEnter * hi StatusLine term=reverse ctermfg=241 ctermbg=232 cterm=none
+au InsertLeave * hi StatusLine term=reverse ctermfg=232 ctermbg=241 cterm=none
+
 
 
 
@@ -41,31 +118,33 @@ set mouse=a             " resize with mouse
 " General Config "
 """"""""""""""""""
 
+" save on double tap ESC
+map <ESC><ESC> :w<CR>
 set autowriteall                        " save all files when compiling, etc.
 set hidden                              " allow hiding unsaved buffers
 au InsertEnter * wall                   " Save when entering or leaving insert mode
 au InsertLeave * wall
-map <ESC><ESC> :w<CR>                   " save on double tap ESC
 autocmd BufWritePre * :%s/\s\+$//e      " trim trailing space on save
 
 
 let loaded_matchparen = 1
-set showcmd                     " Show command in status line
 
-
-nnoremap K <Nop>                " disable help
+" disable help and Ex mode
+nnoremap K <Nop>
+nnoremap Q <Nop>
 
 " recentre search results
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
 nnoremap <silent> * *zz
 nnoremap <silent> # #zz
-nnoremap <silent> g* g*zz
-nnoremap <silent> g# g#zz
 
 
-nnoremap <CR> o<Esc>            " insert newline without leaving insert
-nore ; :                        " map : to ; for going easy on the fingers
+" insert newline without leaving insert
+nnoremap <CR> o<Esc>
+
+" map : to ; for going easy on the fingers
+nore ; :
 
 set autoindent                  " copy indentation from previous line
 set smartindent                 " automatically insert an extra tab when appropriate
@@ -76,10 +155,9 @@ set expandtab                   " use spaces instead of a tab character
 set incsearch                   " add incremental search
 
 set backup                      " custom backup directories
-set backupdir=~/.vim/backup     " NOTE: this will need to be created
+set backupdir=~/.vim/backup     " NOTE: these will need to be created
 set directory=~/.vim/tmp        " when cloning the vim config from github
 
-set relativenumber              " relative linenumbering
 
 
 " disable autocomment
@@ -90,27 +168,18 @@ set complete+=k
 
 
 
-" default the statusline when entering Vim
-set laststatus=2
-hi StatusLine term=reverse ctermfg=232 ctermbg=241 cterm=none
-hi User1 ctermfg=3 ctermbg=241
-au InsertEnter * hi StatusLine term=reverse ctermfg=241 ctermbg=232 cterm=none
-au InsertLeave * hi StatusLine term=reverse ctermfg=232 ctermbg=241 cterm=none
-au InsertEnter * hi User1 term=reverse ctermfg=3 ctermbg=232 cterm=none
-au InsertLeave * hi User1 term=reverse ctermfg=3 ctermbg=241 cterm=none
 
 
 """"""""""""""""""
 " Custom Keymaps "
 """"""""""""""""""
 
-" switch between header and source
- map <silent> <F1> :A<CR>
-imap <silent> <F1> <Esc>:A<CR>
-
+" remove current buffer
+ map <silent> <F2> :bd<CR>
+imap <silent> <F2> <Esc>:bd<CR>
 
 " toggle pasting
- map <silent> <F3> <ESC>:call TogglePaste()<CR>
+ map <silent> <F3> :call TogglePaste()<CR>
 imap <silent> <F3> <ESC>:call TogglePaste()<CR>
 
 let g:toggle_relative_paste = 0
@@ -134,13 +203,8 @@ imap <F6> <ESC> <Leader>c<space>
 " code folding (F8 toggles current fold, Ctrl-F8 toggles all)
  map <F8> zA
 imap <F8> <Esc>zA
- map <C-F8> zi
-imap <C-F8> <Esc>zi
-
-
-" faster escaping (mash j and k together)
-inoremap jk <ESC>
-inoremap kj <ESC>
+ map <silent> <C-F8> :call ToggleAllFolds()<CR>
+imap <silent> <C-F8> <Esc>:call ToggleAllFolds()<CR>
 
 " disable arrow keys for learning!
 noremap   <Up>     <NOP>
@@ -148,11 +212,18 @@ noremap   <Down>   <NOP>
 noremap   <Left>   <NOP>
 noremap   <Right>  <NOP>
 
+" move lines up or down
+ map <C-Down> mmp
+imap <C-Down> <Esc>mmp
+ map <C-Up> mmkP
+imap <C-Up> <Esc>mmkP
 
-" Changes navigation so pressing down on a wrapped line goes to the next row,
-" not the next line
+" pressing down on a wrapped line goes to the next row, not the next line
 nnoremap j gj
 nnoremap k gk
+
+imap kj <Esc>
+imap jk <Esc>
 
 " move between functions with Tab / Shift+Tab in normal mode
 nmap <silent> <Tab> :silent! normal }<CR>
@@ -161,10 +232,10 @@ nmap <silent> <S-Tab> :silent! normal {<CR>
 " switch buffer
 noremap <C-left> :bprev<CR>
 noremap <C-right> :bnext<CR>
-let g:buftabs_marker_modified = "*"
 
 
-" make Y behave like it shoudl
+
+" make Y behave like it should
 map Y y$
 
 
@@ -179,10 +250,11 @@ autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
 
 
+
 """"""""""""""""""""""
 " Completion Configs "
 """"""""""""""""""""""
-let g:SuperTabDefaultCompletionType = 'context'
+
 set ofu=syntaxcomplete#Complete
 set completeopt=menu
 
@@ -199,9 +271,9 @@ autocmd FileType c set omnifunc=ccomplete#Complete
 
 
 
-"""""""""""""""""""""""
-" Substitution Macros "
-"""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""
+" Substitution Macros (used in c.vim) "
+"""""""""""""""""""""""""""""""""""""""
 
 " Help delete character if it is 'empty space' stolen from Vim manual
 function! Eatchar()
