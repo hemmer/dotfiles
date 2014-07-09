@@ -1,4 +1,4 @@
 # ignore temp / backup files
-vim/backup/*
-vim/tmp/*
-vim/bundle/*
+vim/vim/backup/*
+vim/vim/tmp/*
+vim/vim/bundle/*

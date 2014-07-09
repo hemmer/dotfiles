@@ -200,11 +200,11 @@ nnoremap <silent> <F4> :GundoToggle<CR>
  map <F6> <Leader>c<space>
 imap <F6> <ESC> <Leader>c<space>
 
-" code folding (F8 toggles current fold, Ctrl-F8 toggles all)
+" code folding (F8 toggles current fold, F7 toggles all)
+ map <silent> <F7> :call ToggleAllFolds()<CR>
+imap <silent> <F7> <Esc>:call ToggleAllFolds()<CR>
  map <F8> zA
 imap <F8> <Esc>zA
- map <silent> <C-F8> :call ToggleAllFolds()<CR>
-imap <silent> <C-F8> <Esc>:call ToggleAllFolds()<CR>
 
 " disable arrow keys for learning!
 noremap   <Up>     <NOP>

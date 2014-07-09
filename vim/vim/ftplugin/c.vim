@@ -16,10 +16,6 @@ set wildignore=*.o,*.obj,*~
 """""""""""""""""""""
 " C/C++ Keymappings "
 """""""""""""""""""""
-" run program
- map <F5> :make exec<CR>
-imap <F5> <Esc> :make exec<CR>
-
 " compile using make
  noremap <F9> :silent make<CR>:redraw!<CR>
 inoremap <F9> <Esc> :silent make<CR>:redraw!<CR>
