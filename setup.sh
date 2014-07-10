@@ -2,7 +2,8 @@
 
 # set up symbolic links to the dotfiles folder for...
 
-# vim
+##################################################################
+# vim ############################################################
 rm -f ~/.vimrc && ln -s ~/dotfiles/vim/vimrc ~/.vimrc
 rm -f ~/.vim && ln -s ~/dotfiles/vim/vim ~/.vim
 
@@ -15,10 +16,14 @@ git clone git@github.com:gmarik/Vundle.vim.git vundle
 
 vim +PluginInstall +qall
 
+##################################################################
 
 
-# tmux
+
+##################################################################
+# tmux ###########################################################
 rm -f ~/.tmux.conf && ln -s ~/dotfiles/tmux/tmux.conf ~/.tmux.conf
 rm -f ~/.tmux && ln -s ~/dotfiles/tmux/tmux ~/.tmux
 
+##################################################################
 

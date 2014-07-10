@@ -100,7 +100,7 @@ hi Visual                      ctermbg=235
 hi WarningMsg      ctermfg=231 ctermbg=238   cterm=bold
 hi WildMenu        ctermfg=81  ctermbg=16
 
-hi Normal          ctermfg=252 ctermbg=234
+hi Normal          ctermfg=252 ctermbg=none
 hi Comment         ctermfg=59
 hi CursorLine                  ctermbg=234   cterm=none
 hi CursorColumn                ctermbg=234
