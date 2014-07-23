@@ -1,0 +1,16 @@
+#! /bin/bash
+
+if ! outputDataExists; then exit -1; fi
+
+if [ $# -eq 0 ]; then
+    # print stress-time plot
+    awk '/#f#/ {print $2, $6, 0.5*($4 + $5)} ' output-data > data_force && xm -nxy data_force
+
+elif [ $# -eq 1 ]; then
+    # print stress-time plot
+    awk '/#f#/ {$1 = ""; $3 = ""; print} ' output-data > data_force && xm -nxy data_force
+else
+    echo "No arguments needed"
+    exit -1
+fi
+

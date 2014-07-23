@@ -1,0 +1,7 @@
+#! /bin/bash
+awk '/#xa_vmag#/ {$1=""; print}' output-data > rest
+awk '/#xa#/ {print $2 " " $3}' output-data > rest2
+
+xmgrace -free -noask rest2 -settype xydy rest
+
+

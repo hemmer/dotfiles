@@ -1,0 +1,17 @@
+#! /bin/bash
+
+if [ $# -eq 1 ]; then
+    file=data_$1
+else 
+    file=data
+fi
+
+# get vrms
+awk '/#mean_flow_sd#/ {print $2 " " $3 " " $4}' output-data > $file
+
+# print to terminal for reference
+cat $file
+
+# and plot
+xmgrace -log xy -free -noask -settype xydy $file
+

@@ -1,0 +1,37 @@
+#! /bin/bash
+
+if ! outputDataExists; then exit -1; fi
+
+if [ $# -eq 0 ]; then
+
+    gen_cols
+    # print all columns (vrms, thruput, etc)
+    awk '/#flow#/ {$1=""; print} ' output-data > data_flow_all && xmgrace -free -noask -nxy data_flow_all
+
+elif [ $# -eq 1 ]; then
+
+    # the user passes the column they want displayed
+    if [ $1 == "vrms" ]; then col=3
+    elif [ $1 == "thru" ]; then col=4
+    elif [ $1 == "enst" ]; then col=6
+    elif [ $1 == "vort" ]; then col=7
+    else col=3
+    fi
+
+    tau=`tauC`
+    output_file=`printf "data_flow_${1}_t%08.03f" $tau`
+
+    #GC=`GC`
+    #output_file=`printf "data_flow_${1}_$GC"`
+
+    #output_file=data_flow_$1
+
+    awk '{if ($0 ~ /#flow# @/){$1=""; print} else if ($0 ~ /#flow#/) print $2 " " $'$col'}' output-data > $output_file && xmgrace -free -noask -nxy $output_file
+
+else
+    echo "Given $? args, need either:" >&2
+    echo " * 0 args (prints all quantities)" >&2
+    echo " * 1 argument (prints that column)" >&2
+    exit -1
+fi
+

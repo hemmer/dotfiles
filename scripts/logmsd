@@ -1,0 +1,2 @@
+#! /bin/bash
+awk '/#logmsd#/ {$1=""; print}' output-data | xmgrace -free -noask -pipe

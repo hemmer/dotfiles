@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+import numpy as np
+import matplotlib.pyplot as plt
+import sys
+
+
+if len(sys.argv) == 2:
+    filename = str(sys.argv[1])
+elif len(sys.argv) == 1:
+    filename = "latest.chk"
+else :
+    print "ERROR: need 0 or 1 argument (filename)"
+
+print "Loading", filename
+data = np.loadtxt(filename, skiprows=11, usecols=(2,3,4))
+#data = np.loadtxt(filename, skiprows=11, usecols=(2,3,4,5,6,7))
+#data = np.loadtxt(filename, skiprows=0, usecols=(2,3,4,5,6,7))
+
+Lx, Ly = 4.0, 1.0
+numquant = len(data[0])
+numrows = len(data)
+print numrows
+
+Ny = int(np.sqrt(numrows / Lx))
+Nx = int(Lx * Ny)
+print "Nx, Ny =", Nx, Ny
+
+dx = Lx / Nx
+xaxis, yaxis = np.arange(0.0, Lx, dx), np.linspace(0.0, Ly, Ny)
+
+
+Y, X = np.meshgrid(yaxis, xaxis)
+xs = X.flatten()
+ys = Y.flatten()
+
+
+fig, axes = plt.subplots(nrows=numquant, ncols=1, facecolor='white')
+fig.tight_layout()
+plt.title("old")
+for quant in xrange(numquant):
+    fig.add_subplot(numquant*100 + 11 + quant)
+    dataplot = data[:, quant].reshape(Nx, Ny)
+    plt.pcolormesh(X, Y, dataplot)
+
+plt.show()

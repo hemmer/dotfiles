@@ -1,0 +1,11 @@
+#! /bin/bash
+
+zeta=`awk '/#Q# ζ/ {print $5}' output-data | sed "s/,/0/"`
+
+filename1=data_vacf_z${zeta}
+filename2=data_vacfn_z${zeta}
+
+awk '/#vacf_scaled#/ {$1=""; print}' output-data > $filename1 && xmgrace -free -noask $filename1
+awk '/#vacf_norm#/ {$1=""; print}' output-data > $filename2 && xmgrace -free -noask $filename2
+
+

@@ -1,0 +1,22 @@
+#! /bin/bash
+
+if ! outputDataExists; then exit -1; fi
+
+if [ $# -eq 0 ]; then
+
+    gen_cols
+
+    tau=`tauC`
+    output_file=`printf "data_trC_t%09.03f" $tau`
+
+    # print all columns (vrms, thruput, etc)
+    #awk '/#trC#/ {$1=""; print} ' output-data > $output_file && xmlogy -nxy $output_file
+    awk '/#trC#/ {print $2, $3} ' output-data > $output_file && xmlogy $output_file
+
+else
+    echo "Given $? args, need either:" >&2
+    echo " * 0 args (prints all quantities)" >&2
+    echo " * 1 argument (prints that column)" >&2
+    exit -1
+fi
+

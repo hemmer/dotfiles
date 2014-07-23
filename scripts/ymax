@@ -1,0 +1,20 @@
+#! /bin/bash
+
+
+if [ $# -eq 0 ]; then
+
+    gen_cols
+
+    awk '/#ymax#/ {$1=""; print} ' output-data > data_ymax && xm data_ymax
+
+elif [ $# -eq 1 ]; then
+
+    # the user passes the column they want displayed
+    if [ $1 == "Q" ]; then pref="Q"
+    elif [ $1 == "C" ]; then pref="C"
+    elif [ $1 == "gdot" ]; then pref=""
+    else exit -1;
+    fi
+
+    awk '/#ymax'$pref'#/ {$1=""; print} ' output-data > data_ymax$pref && xm data_ymax$pref
+fi

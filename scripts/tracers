@@ -1,0 +1,22 @@
+#! /bin/bash
+
+
+if [ $# -ne 1 ]; then
+    echo "need number of tracers as argument"
+    exit -1
+else
+    numTracers=`echo "$1 - 1" | bc`
+fi
+
+# emtpy data file
+> tracers.agr
+for i in `seq 0 $numTracers`; do
+    awk "/#t$i#/ {\$1=\"\"; print}" output-data >> tracers.agr
+done
+
+
+# if we ahve an xserver running then
+# show plot
+if [[ -n "$DISPLAY" ]]; then
+    xmgrace -free -noask tracers.agr
+fi

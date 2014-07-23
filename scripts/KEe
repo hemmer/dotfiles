@@ -1,0 +1,3 @@
+#! /bin/bash
+awk '/#mean_flow_sd#/ {print $7 " " $9 " " $8 " " $10}' output-data > rest && xmgrace -free -noask -settype xydxdy rest
+

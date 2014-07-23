@@ -1,0 +1,18 @@
+#! /bin/bash
+
+# Extracts time series data for thruput (or vrms etc) 
+# and plots a histogram to examine the distribution.
+
+# if we have an argument, it is the column number to use
+if [ $# -eq 1 ]; then
+    if [ $1 == "vrms" ]; then col=3
+    elif [ $1 == "thru" ]; then col=4
+
+    # throuput is the default
+    else col=4
+    fi
+else 
+    col=4
+fi
+
+awk '{if ($0 ~ /#flow# @/){$1=""} else if ($0 ~ /#flow#/) print $'$col'}' output-data | ~/code/active-js/scripts/distrib.py

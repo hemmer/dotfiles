@@ -1,0 +1,5 @@
+#! /bin/bash
+
+# print all columns
+awk '/#stp#/ {$1=""; print} ' output-data > rest && gnuplot
+

@@ -31,6 +31,7 @@ Plugin 'tpope/vim-repeat'
 Plugin 'svermeulen/vim-easyclip'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'hemmer/toggle-all-folds'
+Plugin 'kana/vim-arpeggio'
 
 "set rtp+=~/.vim/bundle/vim-latex-suite
 Plugin 'gerw/vim-latex-suite'
@@ -42,6 +43,7 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'vim-scripts/Python-Syntax-Folding'
 
 call vundle#end()            " required
+call arpeggio#load()         " use chords
 
 filetype plugin indent on
 
@@ -213,8 +215,8 @@ imap <C-Up> <Esc>mmkP
 nnoremap j gj
 nnoremap k gk
 
-imap kj <Esc>
-imap jk <Esc>
+Arpeggio inoremap kj <Esc>
+Arpeggio inoremap jk <Esc>
 
 " move between functions with Tab / Shift+Tab in normal mode
 nmap <silent> <Tab> :silent! normal }<CR>

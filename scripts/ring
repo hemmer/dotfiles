@@ -1,0 +1,15 @@
+#! /bin/bash
+
+if ! outputDataExists; then exit -1; fi
+
+if [ $# -eq 0 ]; then
+    # print ring of Lagrangian points (final state)
+    awk '/#sL#/ {print $3, $4}' output-data > data_ring && xm data_ring
+elif [ $# -eq 1 ]; then
+    # print ring of Lagrangian points (final state)
+    awk '/#sL#/ {print $3, $4}' output-data > data_temp && lb data_temp > data_ring && rm data_temp && xm data_ring
+else
+    echo "No arguments needed"
+    exit -1
+fi
+

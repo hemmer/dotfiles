@@ -1,0 +1,87 @@
+#! /bin/bash
+
+if [ $# -eq 0 ]; then
+    echo "Need at least one arg!" >&2
+    exit -1
+fi
+
+quantity=$1
+
+project=`awk '/#p#/ {print $2; exit}' output-data`
+echo "Project is: $project" >&2
+
+if [[ $project == "immersed" ]]; then
+
+    if [ $# -eq 2 ]; then
+        streamlineNumber=$2
+    else
+        streamlineNumber="1"
+    fi
+
+    colx=2;
+
+    if   [ $quantity == "xy" ];  then colx=3; coly=4;
+
+    elif [ $quantity == "vx" ];  then coly=5
+    elif [ $quantity == "vy" ];  then coly=6
+
+    elif [ $quantity == "lK" ];  then coly=7
+    elif [ $quantity == "lD" ];  then coly=8
+    elif [ $quantity == "lOm" ]; then coly=9
+    elif [ $quantity == "Q" ];   then coly=10
+
+    elif [ $quantity == "trC" ]; then coly=11
+    elif [ $quantity == "eigC" ];then coly=12
+
+    else echo "Quantity not found" >&2; exit -1
+    fi
+
+
+elif [[ $project == "immersed_v0.1" ]]; then
+
+    if [ $# -eq 2 ]; then
+        streamlineNumber=$2
+    else
+        streamlineNumber="1"
+    fi
+
+    colx=2;
+
+    if   [ $quantity == "xy" ]; then
+        colx=3; coly=4;
+        # include the latest cylinder position
+        awk '/#sL#/ {print $3, $4}' output-data > data_temp
+        lb data_temp > data_ring && rm data_temp
+        ring=data_ring
+        # and set the axes to show the whole world
+        axes=`printf "@version 50122\n@with g0\n@    world -0.7071, -0.7071, 0.7071, 0.7071\n"`
+
+    elif [ "$quantity" == "vx" ]; then coly=5
+    elif [ "$quantity" == "vy" ]; then coly=6
+
+    elif [ "$quantity" == "K" ]; then coly=7
+    elif [ "$quantity" == "D" ]; then coly=8
+    elif [ "$quantity" == "Om" ]; then coly=9
+    elif [ "$quantity" == "q" ]; then coly=10
+
+    elif [ "$quantity" == "fx" ]; then coly=11
+    elif [ "$quantity" == "fy" ]; then coly=12
+
+    elif [ "$quantity" == "trC" ]; then coly=13
+    elif [ "$quantity" == "detC" ]; then coly=14
+    elif [ "$quantity" == "eigC" ]; then coly=15
+
+    else echo "Quantity not found" >&2; exit -1
+    fi
+
+else
+    echo "Project not found!" >&2
+    exit -1
+fi
+
+echo "Plotting $quantity (cols $colx, $coly) for $project, slice: $search" >&2
+
+outputFile=data_stream_${quantity}
+
+echo "$axes" > $outputFile && awk '/#streamline'$streamlineNumber'#/ {print $'$colx', $'$coly'}' output-data >> $outputFile && xmgrace -free -noask -nxy $ring $outputFile
+

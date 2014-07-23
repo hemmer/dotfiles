@@ -1,0 +1,18 @@
+#! /bin/bash
+
+if ! outputDataExists; then exit -1; fi
+
+if [ $# -eq 1 ]; then
+    gen_cols 20
+    dir=$1
+    output_file="data_modes_$dir"
+
+    # print modes as function of time
+    awk '/#m'$dir'#/ {$1=""; print} ' output-data > $output_file && xmgrace -log y -free -noask -nxy $output_file
+
+else
+
+    echo "Need 1 arg (direction), given $#." >&2
+    exit -1
+fi
+

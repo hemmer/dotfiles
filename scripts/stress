@@ -1,0 +1,13 @@
+#! /bin/bash
+
+if [ $# -eq 0 ]; then
+    # print stress-time plot
+    awk '/#stress#/ {$1=""; print} ' output-data > data_stress && xm data_stress
+elif [ $# -eq 1 ]; then
+    # print stress-time plot
+    awk '/#stressQC#/ {$1=""; print} ' output-data > data_stress_QC && xm -nxy data_stress_QC
+else
+    echo "No arguments needed"
+    exit -1
+fi
+

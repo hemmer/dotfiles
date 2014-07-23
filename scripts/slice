@@ -1,0 +1,196 @@
+#! /bin/bash
+
+if [ $# -eq 0 ]; then
+    echo "Need at least one arg!" >&2
+    exit -1
+fi
+
+if ! outputDataExists; then exit -1; fi
+
+#gen_cols 250
+
+quantity=$1
+
+project=`awk '/#p#/ {print $2; exit}' output-data`
+echo "Project is: $project" >&2
+
+
+if [[ $project == "immersed_v0.1" ]]; then
+
+    # assume slice (unless specified)
+    if [ $# -eq 2 ]; then search="#s$2#"
+    else search="#sy#"; fi
+
+    if   [ "$quantity" == "vx" ]; then col=3
+    elif [ "$quantity" == "vy" ]; then col=4
+    elif [ "$quantity" == "vmag" ]; then plotstr='sqrt($3*$3 + $4*$4)'
+
+    elif [ "$quantity" == "K" ]; then col=5
+    elif [ "$quantity" == "D" ]; then col=6
+    elif [ "$quantity" == "Om" ]; then col=7
+    elif [ "$quantity" == "q" ]; then col=8
+
+    elif [ "$quantity" == "fx" ]; then col=9
+    elif [ "$quantity" == "fy" ]; then col=10
+
+    elif [ "$quantity" == "trC" ]; then col=11
+    elif [ "$quantity" == "detC" ]; then col=12
+    elif [ "$quantity" == "eigC" ]; then col=13
+
+    elif [ "$quantity" == "p" ]; then col=14
+    elif [ "$quantity" == "psi" ]; then col=15
+
+    else echo "Quantity not found" >&2; exit -1
+    fi
+
+
+
+elif [[ $project == "immersed" ]]; then
+
+    # assume slice (unless specified)
+    if [ $# -eq 2 ]; then search="#s$2#"
+    else search="#sy#"; fi
+
+    if   [ $quantity == "vx" ]; then col=3
+    elif [ $quantity == "vy" ]; then col=4
+
+    elif [ $quantity == "Kxx" ]; then col=5
+    elif [ $quantity == "Kxy" ]; then col=6
+    elif [ $quantity == "Kyx" ]; then col=7
+
+    elif [ $quantity == "fx" ]; then col=8
+    elif [ $quantity == "fy" ]; then col=9
+
+    elif [ $quantity == "lK" ];  then col=10
+    elif [ $quantity == "lD" ];  then col=11
+    elif [ $quantity == "lOm" ]; then col=12
+    elif [ $quantity == "Q" ];   then col=13
+
+    elif [ $quantity == "trC" ]; then col=14
+    elif [ $quantity == "eigC" ]; then col=15
+
+
+
+    else echo "Quantity not found" >&2; exit -1
+    fi
+
+
+elif [[ $project == "flow-porous" ]]; then
+
+    # assume slice (unless specified)
+    if [ $# -eq 2 ]; then search="#s$2#"
+    else search="#sx#"; fi
+
+    if   [ $quantity == "vx" ]; then col=3
+    elif [ $quantity == "vy" ]; then col=4
+    elif [ $quantity == "ext" ]; then col=5
+    elif [ $quantity == "gdot" ]; then col=6
+    elif [ $quantity == "vort" ]; then col=7
+    elif [ $quantity == "vmag" ]; then col=8
+    elif [ $quantity == "psi" ]; then col=9
+    elif [ $quantity == "Wxy" ]; then col=10
+    elif [ $quantity == "TrW" ]; then col=11
+    elif [ $quantity == "eigW" ]; then col=12
+    elif [ $quantity == "Kxy" ]; then col=13
+    elif [ $quantity == "Kyx" ]; then col=14
+    elif [ $quantity == "S" ]; then col=15
+    elif [ $quantity == "fx" ]; then col=16
+    elif [ $quantity == "fy" ]; then col=17
+
+    else echo "Quantity not found" >&2; exit -1
+    fi
+
+# if we are in a directory with mentions of porous use
+# one set of plotting lookups
+elif [[ $project == "porous" ]]; then
+
+    # default slice is in x-direction
+    if [ $# -eq 2 ]; then search="#s$2#"
+    else search="#sx#"; fi
+
+    if   [ $quantity == "Cxx" ]; then col=3
+    elif [ $quantity == "Cxy" ]; then col=4
+    elif [ $quantity == "Cyy" ]; then col=5
+    elif [ $quantity == "detC" ]; then col=6
+    elif [ $quantity == "trC" ]; then col=7
+
+    elif [ $quantity == "vx" ]; then col=8
+    elif [ $quantity == "vy" ]; then col=9
+
+    elif [ $quantity == "ext" ]; then col=10
+    elif [ $quantity == "gdot" ]; then col=11
+    elif [ $quantity == "vort" ]; then col=12
+
+    elif [ $quantity == "PiS" ]; then col=13
+    elif [ $quantity == "PiE" ]; then col=14
+
+    elif [ $quantity == "phi" ]; then col=15
+    elif [ $quantity == "fx" ]; then col=16
+    elif [ $quantity == "fy" ]; then col=17
+
+    else echo "Quantity $quantity not found!"; exit -1
+    fi
+
+
+# otherwise look for active maps
+elif [[ $project == "active-js" ]]; then
+
+    # default slice is in y-direction
+    if [ $# -eq 2 ]; then search="#s$2#"
+    else search="#sy#"; fi
+
+    # the user passes the column they want displayed
+    if   [ $quantity == "Qxx" ]; then col=3
+    elif [ $quantity == "Qxy" ]; then col=4
+    elif [ $quantity == "Qyy" ]; then col=5
+
+    elif [ $quantity == "Cxx" ]; then col=6
+    elif [ $quantity == "Cxy" ]; then col=7
+    elif [ $quantity == "Cyy" ]; then col=8
+    elif [ $quantity == "Czz" ]; then col=9
+    elif [ $quantity == "trC" ]; then col=10
+    elif [ $quantity == "detC" ]; then col=11
+
+    elif [ $quantity == "vx" ]; then col=12
+    elif [ $quantity == "vy" ]; then col=13
+
+    elif [ $quantity == "ext" ];  then col=14
+    elif [ $quantity == "gdot" ]; then col=15
+    elif [ $quantity == "vort" ]; then col=16
+
+    elif [ $quantity == "PiS" ]; then col=17     # shear stress
+    elif [ $quantity == "PiE" ]; then col=18     # ext stress
+    elif [ $quantity == "PiQ" ]; then col=19
+    elif [ $quantity == "PiC" ]; then col=20
+    elif [ $quantity == "angle" ]; then col=21
+
+    else
+        echo "Quantity $quantity not found!" >&2
+        exit -1
+    fi
+
+else
+    echo "Project not found!" >&2
+    exit -1
+fi
+
+# if we haven't defined a combination (like sqrt($3)),
+# make one for the single column
+if [ -z "$plotstr" ]; then plotstr="\$${col}"; fi
+
+# give output file a sensible name
+if [ $# -eq 2 ]; then outputFile=data_${quantity}_$2
+else outputFile=data_$quantity; fi
+
+echo "Plotting $quantity (col $plotstr) for $project, slice: $search" >&2
+
+
+#awk is a pain to inject into so we just create a small script temporarily
+echo "/$search/ {if(NF > 3){print \$2, $plotstr} else print \"\"} " > ${quantity}.awk
+awk -f ${quantity}.awk output-data > $outputFile
+rm ${quantity}.awk
+
+# finally plot
+xmgrace -free -noask -nxy $outputFile
+
+#rm data_$quantity

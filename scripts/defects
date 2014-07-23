@@ -1,0 +1,9 @@
+#!/bin/bash
+
+output_file=data_defects_`tauC`
+output_file=data_defects_`GC`
+output_file=data_defects_`zeta`
+
+awk '/#defects#/ {$1=""; print} ' output-data > $output_file && xm -nxy $output_file
+#awk '/#defect#/ {$1=""; print} ' output-data > $output_file && xmlogxy -nxy $output_file
+#awk '/#defects#/ {print $2, $3 + $4} ' output-data > $output_file && xm -nxy $output_file

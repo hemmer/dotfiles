@@ -1,0 +1,7 @@
+#!/bin/bash
+
+
+zeta=`awk '/#Q# ζ/ {print $5}' output-data | sed "s/,//"`
+output_file=data_q_z${zeta}
+
+awk '/#q#/ {$1=""; print}' output-data > $output_file && xm -nxy $output_file

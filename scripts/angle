@@ -1,0 +1,12 @@
+#!/bin/bash
+
+slice angle
+exit
+
+if [ $# -eq 0 ]; then
+    echo "plotting angle (all)"
+    awk '/#angle#/ {$1=""; print}' output-data > data_angle && xm data_angle
+elif [ $# -eq 1 ]; then
+    echo "plotting angle (steady state)"
+    awk '/#angle#/ {$1=""; print}' output-data > data_angle && lb data_angle | xm -pipe
+fi

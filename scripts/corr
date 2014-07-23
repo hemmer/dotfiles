@@ -1,0 +1,51 @@
+#! /bin/bash
+
+if [ $# -eq 1 ]; then
+    quant=$1
+
+elif [ $# -eq 0 ]; then
+    quant="QQ"
+
+else
+    echo "Need at least one arg!" >&2
+    exit -1
+fi
+
+gen_cols 5
+
+if [ $quant == "nn" ]; then
+    col=3
+elif [ $quant == "uu" ]; then
+    col=4
+elif [ $quant == "QQ" ]; then
+    col=5
+elif [ $quant == "QC" ]; then
+    col=6
+elif [ $quant == "CC" ]; then
+    col=7
+elif [ $quant == "cos" ]; then
+    col=8
+else
+    echo "Quantity $quant not found!" >&2
+    exit -1
+fi
+
+echo "Plotting $quant correlation"
+
+zeta=`zeta`
+filename=data_corr_${quant}_z${zeta}
+
+#D=`awk '/#Q# diff/ {print $6}' output-data | sed "s/,//"`
+#filename=data_corr_${quant}_D${D}
+
+#tau=`tauC`
+#filename=`printf "data_corr_t%08.03f" $tau`
+
+
+echo "@    s0 legend  \"$zeta\"" > $filename
+
+awk '{if ($0 ~ /#corr# @/){$1=""; print} else if ($0 ~ /#corr#/) print $2 " " $'$col'}' output-data >> $filename && xmgrace -free -noask -nxy $filename
+
+#awk '/#corr#/ {print $2 " " $10}' output-data > rest && xmgrace -free -noask rest
+
+

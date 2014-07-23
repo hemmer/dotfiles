@@ -1,0 +1,26 @@
+#! /bin/bash
+
+if [ $# -eq 1 ]; then
+    file=data_$1
+else
+    file=data
+fi
+
+
+# get abs(thruput) with SD
+echo "thruput against activity (with SD)"
+awk '/#mean_flow_sd#/ {if ($5 < 0) $5 *= -1; print $2 " " $5 " " $6}' output-data > $file
+cat $file
+
+# get thruput normalised by SD
+echo
+echo "normalised by sd"
+awk '/#mean_flow_sd#/ {if ($5 < 0) $5 *= -1; thresh=$5/$6; print $2 " " thresh }' output-data > thresh
+cat thresh
+
+
+# and plot
+#xmgrace -free -noask thresh &
+#xmgrace -free -noask -settype xydy $file &
+#xmgrace -log xy -free -noask -settype xydy $file
+
