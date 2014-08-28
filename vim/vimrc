@@ -54,7 +54,10 @@ set wildmenu
 " on some machines backspace behaves strangely
 set backspace=indent,eol,start
 
-
+" reload files on change
+set autoread
+" make files with shebangs executable
+au BufWritePost * if getline(1) =~ "^#!" | silent !chmod a+x <afile>
 
 """"""""""""""""""""""""""""""
 " 2. Plugin Specific
