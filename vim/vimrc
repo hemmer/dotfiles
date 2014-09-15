@@ -35,6 +35,7 @@ Plugin 'kana/vim-arpeggio'
 
 "set rtp+=~/.vim/bundle/vim-latex-suite
 Plugin 'gerw/vim-latex-suite'
+Plugin 'matze/vim-tex-fold'
 "Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex'
 
 Plugin 'godlygeek/tabular'          " needed for vim-markdown
