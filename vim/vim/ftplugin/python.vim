@@ -19,6 +19,9 @@ autocmd FileType python set omnifunc=pythoncomplete#Complete
 " Python header
 if getline(1) == ""
     :call setline(1, "#!/usr/bin/env python")
+    :call setline(2, "")
+    :call setline(3, "import numpy as np")
+    :call setline(4, "import scipy as sp")
 endif
 
 

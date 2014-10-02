@@ -33,10 +33,8 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'hemmer/toggle-all-folds'
 Plugin 'kana/vim-arpeggio'
 
-"set rtp+=~/.vim/bundle/vim-latex-suite
 Plugin 'gerw/vim-latex-suite'
 Plugin 'matze/vim-tex-fold'
-"Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex'
 
 Plugin 'godlygeek/tabular'          " needed for vim-markdown
 Plugin 'plasticboy/vim-markdown'
@@ -175,6 +173,8 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 autocmd FileType * exec("setlocal dictionary+=".$HOME."/.vim/dictionaries/".expand('<amatch>'))
 set complete+=k
 
+" set grep for latex usage
+set grepprg=grep\ -nH\ $*
 
 
 
@@ -198,8 +198,8 @@ nnoremap <silent> <F4> :GundoToggle<CR>
 imap <F6> <ESC> <Leader>c<space>
 
 " code folding (F8 toggles current fold, F7 toggles all)
- map <silent> <F7> :call ToggleAllFolds()<CR>
-imap <silent> <F7> <Esc>:call ToggleAllFolds()<CR>
+ noremap <silent> <F7> :call ToggleAllFolds()<CR>
+inoremap <silent> <F7> <Esc>:call ToggleAllFolds()<CR>
  map <F8> zA
 imap <F8> <Esc>zA
 
