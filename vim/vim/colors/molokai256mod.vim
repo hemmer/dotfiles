@@ -17,6 +17,8 @@ let c_gnu = 1
 
 let g:colors_name = "molokai256mod"
 
+hi Conceal       ctermfg=144 ctermbg=232               cterm=none
+
 
 """"""""""""""""""""""""""""""""""
 " Support for 256-color terminal "

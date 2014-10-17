@@ -263,8 +263,9 @@ autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c set omnifunc=ccomplete#Complete
 
-
-
+autocmd BufNewFile,BufRead *.tex set filetype=tex
+autocmd BufNewFile,BufRead *.c set filetype=c
+let g:tex_flavour = "latex"
 
 
 
@@ -296,3 +297,5 @@ function! Iab (ab, full)
     \ a:ab."', '".escape (a:full.'<C-R>=Eatchar()<CR>', '<>\"').
     \"')<CR>"
 endfunction
+
+

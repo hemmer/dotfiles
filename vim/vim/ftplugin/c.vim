@@ -13,6 +13,9 @@ let g:syntastic_c_checker="-llapac -lblas -fftw3"
 " stuff to ignore when tab completing
 set wildignore=*.o,*.obj,*~
 
+" don't indent preprocessor at col 0
+set cinkeys-=0#
+
 """""""""""""""""""""
 " C/C++ Keymappings "
 """""""""""""""""""""
