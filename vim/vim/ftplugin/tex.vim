@@ -81,3 +81,4 @@ setlocal iskeyword+=:,-
 " replace latex symbols with unicode equivelent
 set conceallevel=2
 let g:tex_conceal= 'agm'
+
