@@ -20,12 +20,12 @@ set cinkeys-=0#
 " C/C++ Keymappings "
 """""""""""""""""""""
 " compile using make
- noremap <F9> :silent make<CR>:redraw!<CR>
-inoremap <F9> <Esc> :silent make<CR>:redraw!<CR>
+ " noremap <F9> :silent make<CR>:redraw!<CR>
+" inoremap <F9> <Esc> :silent make<CR>:redraw!<CR>
 "inoremap <F9> <Esc> :make<CR><CR>
 " clean using make
- noremap <C-F9> :make clean<CR><CR>
-inoremap <C-F9> <Esc> :make clean<CR><CR>
+ " noremap <C-F9> :make clean<CR><CR>
+" inoremap <C-F9> <Esc> :make clean<CR><CR>
 
 " generate ctags for directory of active buffer
 nnoremap <C-F12> :!ctags -R --c++-kinds=+pl --fields=+iaS --extra=+q "%:p:h"<CR>
@@ -41,7 +41,6 @@ let Tlist_Exit_OnlyWindow = 1
 " hide omnicomplete scratch pane
 set completeopt=menu
 
-autocmd BufWritePre *.c :%s/\s\+$//e
 
 """"""""""""""""""""""
 " Replacement macros "

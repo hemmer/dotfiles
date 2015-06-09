@@ -11,15 +11,18 @@ let loaded_tex_syntax_checker=0
 set wrap
 set linebreak
 
+" scroll only when in last 5 lines
+set scrolloff=5
+
 " turn on spell checking
-set spell
+set spell spelllang=en_gb
 highlight SpellBad  term=Reverse ctermbg=236
 highlight SpellRare term=Reverse ctermbg=236
 highlight SpellCap  term=Reverse ctermbg=236
 
 
 " custom expander for figure
-let g:Tex_Env_figure = "\\begin{figure}[h!]\<CR>\\centering\<CR>\\includegraphics[width=<++>\\textwidth]{<++>}\<CR>\\caption{<++>}\<CR>\\label{fig:<++>}\<CR>\\end{figure}"
+let g:Tex_Env_figure = "\\begin{figure}[t]\<CR>\\centering\<CR>\\includegraphics[width=<++>\\textwidth]{<++>}\<CR>\\caption{<++>}\<CR>\\label{fig:<++>}\<CR>\\end{figure}"
 
 " turn off Syntastic (it's too sensitive)
 let g:syntastic_tex_checkers=['']
@@ -41,7 +44,7 @@ set errorformat=%f:%l:\ %m
 if exists("g:ctrl_user_command")
   unlet g:ctrlp_user_command
 endif
-set wildignore+=*.agr,*.eps,*.log
+set wildignore+=*.agr,*.eps,*.log,*.svg
 set wildignore+=*.fls,*.aux,*.blg,*.toc,*.out,*.bbl,*.lof
 set wildignore+=*.fdb_latexmk
 let g:ctrlp_custom_ignore = {'file': '\v\.(log|aux|fls|div|ps|pdf)$'}

@@ -13,4 +13,7 @@ call IMAP('\\\', '\(\)', 'tex')
 call IMAP('``r', '\vtr{r}<++>', 'tex')
 call IMAP('``s', '\vtr{s}<++>', 'tex')
 
+call IMAP('`1', '\vtr{<++>}<++>', 'tex')
+call IMAP('`2', '\tsr{<++>}<++>', 'tex')
+
 

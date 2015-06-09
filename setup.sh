@@ -9,10 +9,13 @@ rm -f ~/.vim && ln -s ~/dotfiles/vim/vim ~/.vim
 
 mkdir ~/.vim/backup
 mkdir ~/.vim/tmp
-mkdir ~/.vim/bundle
+mkdir ~/.vim/autoload
 
-cd ~/.vim/bundle
-git clone git@github.com:gmarik/Vundle.vim.git vundle
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# cd ~/.vim/bundle
+# git clone git@github.com:gmarik/Vundle.vim.git vundle
 
 vim +PluginInstall +qall
 
