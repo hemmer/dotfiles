@@ -16,13 +16,15 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'simnalamburt/vim-mundo'           " fork of gundo
 Plug 'kien/ctrlp.vim'                   " fast file opening
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'vim-scripts/buftabs'
 Plug 'scrooloose/nerdcommenter'
 
 Plug 'vim-scripts/Python-Syntax-Folding'
 Plug 'kevinw/pyflakes-vim'
+Plug 'ehamberg/vim-cute-python'
 
-Plug 'ervandew/supertab'
+Plug 'ervandew/supertab'                " tab completion
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-easyclip'
 Plug 'hemmer/toggle-all-folds'
@@ -32,13 +34,13 @@ Plug 'matze/vim-tex-fold'               " folding of sections
 Plug 'gibiansky/vim-latex-objects'      " allow cim (eg. change in $\beta$)
 
 Plug 'godlygeek/tabular'                " needed for vim-markdown
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
 
 Plug 'kana/vim-arpeggio'
 
 if has('nvim')
     Plug 'benekastah/neomake'
-    nnoremap <F9> :Neomake!<CR>
+    nnoremap <F9> :w<CR>:Neomake!<CR>
 else
     Plug 'ConradIrwin/vim-bracketed-paste'
     Plug 'scrooloose/syntastic'
@@ -59,8 +61,11 @@ set wildmenu
 " on some machines backspace behaves strangely
 set backspace=indent,eol,start
 
-" reload files on change
-set autoread
+
+set autoread        " reload files on change
+set noautochdir     " dont change directory automatically
+let g:ctrlp_working_path_mode = '0'
+
 " make files with shebangs executable
 au BufWritePost * if getline(1) =~ "^#!" | silent !chmod a+x <afile>
 
@@ -92,6 +97,7 @@ let g:SuperTabDefaultCompletionType = 'context'
 let g:ctrlp_map = '<c-e>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_max_depth = 2
+
 
 " type of latex
 let g:tex_flavour = 'latex'
@@ -126,6 +132,9 @@ else
     set number
 endif
 
+if version >= 713
+    set breakindent         " linebreak follows indentation
+endif
 
 " always show a status-line
 set laststatus=2
@@ -141,8 +150,8 @@ au InsertLeave * hi StatusLine term=reverse ctermfg=232 ctermbg=241 cterm=none
 " General Config "
 """"""""""""""""""
 
-" save on double tap ESC
-map <ESC><ESC> :w<CR>
+" save on double tap ESC (also clear highlighting)
+map <ESC><ESC> :noh<CR>:w<CR>
 set autowriteall                        " save all files when compiling, etc.
 set hidden                              " allow hiding unsaved buffers
 
@@ -173,7 +182,6 @@ nore ; :
 
 set autoindent                  " copy indentation from previous line
 set smartindent                 " automatically insert an extra tab when appropriate
-set breakindent                 " linebreak follows indentation
 set tabstop=4                   " how many characters is a tab
 set shiftwidth=4                " how many characters to indent by
 set expandtab                   " use spaces instead of a tab character

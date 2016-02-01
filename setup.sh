@@ -17,7 +17,7 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 # cd ~/.vim/bundle
 # git clone git@github.com:gmarik/Vundle.vim.git vundle
 
-vim +PluginInstall +qall
+vim +PlugUpdate +qall
 
 ##################################################################
 

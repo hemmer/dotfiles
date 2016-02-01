@@ -41,6 +41,9 @@ let Tlist_Exit_OnlyWindow = 1
 " hide omnicomplete scratch pane
 set completeopt=menu
 
+" compile of save
+" autocmd! BufWritePost * Neomake
+
 
 """"""""""""""""""""""
 " Replacement macros "
@@ -69,7 +72,7 @@ set errorformat^=%-GIn\ file\ included\ from\ %f:%l:%c:,%-GIn\ file
          \\ included\ from\ %f:%l:%c\\,,%-GIn\ file\ included\ from\ %f
          \:%l:%c,%-GIn\ file\ included\ from\ %f:%l
 
-set mp=(make\ clean\ &&\ make)
+set makeprg=(make\ -B)
 
 " allow sensible code folding
 set foldmethod=syntax

@@ -64,6 +64,11 @@ imap <silent> <buffer> <S-F3> <Plug>Tex_FastCommandChange
 nmap <silent> <buffer> <S-F3> <Plug>Tex_FastCommandChange
 vmap <silent> <buffer> <F3> <Plug>Tex_FastCommandInsert
 
+" F9 to spellcheck
+imap <F9> <Esc>]s
+nmap <F9> ]s
+
+
 " add useful prefixes to labels
 let g:Tex_EnvLabelprefix_equation = "eq:"
 let g:Tex_EnvLabelprefix_align = "eq:"
