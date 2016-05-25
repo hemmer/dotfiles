@@ -74,8 +74,10 @@ set shell=/bin/bash
 
 
 
+
 if has('nvim')
     " TODO
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 else
     set ttymouse=xterm2         " can use mouse in terminal
 endif
@@ -218,7 +220,7 @@ imap <silent> <F2> <Esc>:bd<CR>
 nnoremap <F3>= :Tabularize /=<CR>
 
 " toggle undo history
-nnoremap <silent> <F4> :GundoToggle<CR>
+nnoremap <silent> <F4> :MundoToggle<CR>
 
 " toggle comment
  map <F6> <Leader>c<space>

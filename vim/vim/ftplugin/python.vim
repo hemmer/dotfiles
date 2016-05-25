@@ -5,6 +5,9 @@ inoremap <buffer> <F5> <ESC>:w<CR>:!/usr/bin/env python % <CR>
  noremap <buffer> <C-F5> :w<CR>:!time /usr/bin/env python % <CR>
 inoremap <buffer> <C-F5> <ESC>:w<CR>:!time /usr/bin/env python % <CR>
 
+let &colorcolumn=join(range(81,999),",")
+highlight ColorColumn ctermbg=235 guibg=#2c2d27
+
 " good whitespace settings for python
 setlocal tabstop=4
 setlocal softtabstop=4
